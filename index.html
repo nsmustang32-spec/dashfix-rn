@@ -673,6 +673,13 @@
       document.getElementById('form-view').style.display    = 'none';
       document.getElementById('success-view').style.display = 'flex';
       loadCount();
+
+      // Send confirmation email — fire-and-forget, silent on failure
+      fetch('https://klynisftwrujkwhsqnvm.supabase.co/functions/v1/waitlist-welcome', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, name: name || null }),
+      }).catch(() => {});
     }
 
     document.addEventListener('keydown', e => {

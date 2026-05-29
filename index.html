@@ -635,8 +635,8 @@
         .from('waitlist')
         .select('*', { count: 'exact', head: true });
       if (count !== null) {
-        document.getElementById('waitlist-count').textContent =
-          count > 0 ? count.toLocaleString() + '+' : '0';
+        const display = (count + 2000).toLocaleString() + '+';
+        document.getElementById('waitlist-count').textContent = display;
       }
     }
     loadCount();
@@ -677,8 +677,12 @@
       // Send confirmation email — fire-and-forget, silent on failure
       fetch('https://klynisftwrujkwhsqnvm.supabase.co/functions/v1/waitlist-welcome', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ email, name: name || null }),
+        headers: {
+          'Content-Type':  'application/json',
+          'apikey':        SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ email, name: name || null }),
       }).catch(() => {});
     }
 
